@@ -26,10 +26,10 @@ SECRET_KEY = os.getenv('django-insecure-+!!i5r^f14n^j_c$+=*u2%k%g%=&zlklrx72hs(n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
-).split(",")
+ALLOWED_HOSTS = [
+    "solvespace-nine.vercel.app",
+    "solvespace-nys6ktv9g-joel-ojonimi-joshuas-projects.vercel.app",
+]
 
 STATIC_URL = 'static/'
 
