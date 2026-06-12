@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Delete Question — SolveSpace{% endblock %}
+
+{% block content %}
+
+<div style="max-width:520px; margin:0 auto; text-align:center; padding-top:40px;">
+
+  <div style="width:64px; height:64px; border-radius:50%; background:rgba(192,87,74,0.1); border:1px solid rgba(192,87,74,0.3);
+              display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:1.5rem; color:var(--danger);">
+    ✕
+  </div>
+
+  <h2 style="margin-bottom:12px;">Delete this question?</h2>
+  <p style="color:var(--text-muted); margin-bottom:8px; font-size:15px;">
+    This action is permanent and cannot be undone.
+  </p>
+
+  <div class="card" style="text-align:left; margin:28px 0; background:var(--void);">
+    <div class="flex-gap" style="margin-bottom:10px;">
+      <span class="badge badge-gold">{{ question.question_type }}</span>
+    </div>
+    <h4 style="color:var(--text-muted); font-weight:400;">{{ question.topic }}</h4>
+  </div>
+
+  <div class="flex-center" style="gap:16px;">
+    <a href="{% url 'question_details' question.slug %}" class="btn btn-ghost">
+      Keep it
+    </a>
+    <form method="POST" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        Delete permanently
+      </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

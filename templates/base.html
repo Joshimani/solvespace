@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SolveSpace{% endblock %}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ── Aurum Design System ── */
+      :root {
+        --void: #0d0f14;
+        --surface: #1a1d26;
+        --card: #21242f;
+        --card-hover: #272b38;
+        --border: #2e3244;
+        --gold: #c9a84c;
+        --gold-light: #e8d5a3;
+        --gold-dim: #8a6f30;
+        --gold-glow: rgba(201, 168, 76, 0.15);
+        --text: #e8e8ec;
+        --text-muted: #7a7f96;
+        --text-faint: #4a4f64;
+        --danger: #c0574a;
+        --success: #4a8c6a;
+        --radius: 6px;
+        --radius-lg: 12px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--void);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 17px;
+        line-height: 1.7;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--void);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--gold-dim);
+        border-radius: 3px;
+      }
+
+      /* ── Typography ── */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 500;
+        line-height: 1.2;
+        color: var(--gold-light);
+        letter-spacing: 0.01em;
+      }
+      h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+      h2 {
+        font-size: clamp(1.5rem, 3vw, 2.2rem);
+      }
+      h3 {
+        font-size: 1.4rem;
+      }
+      h4 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        color: var(--text);
+      }
+
+      a {
+        color: var(--gold);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      a:hover {
+        color: var(--gold-light);
+      }
+
+      /* ── Layout ── */
+      .container {
+        width: 100%;
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 48px 0 80px;
+      }
+
+      /* ── Navbar ── */
+      .navbar {
+        background: rgba(13, 15, 20, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .navbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+      }
+
+      .navbar-brand {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--gold-light);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .navbar-brand span {
+        color: var(--gold);
+      }
+
+      .navbar-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        list-style: none;
+      }
+
+      .nav-link {
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        padding: 6px 14px;
+        border-radius: var(--radius);
+        transition:
+          color 0.2s,
+          background 0.2s;
+        position: relative;
+      }
+      .nav-link:hover,
+      .nav-link.active {
+        color: var(--gold-light);
+        background: var(--gold-glow);
+      }
+      .nav-link.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 14px;
+        right: 14px;
+        height: 2px;
+        background: var(--gold);
+        border-radius: 1px;
+      }
+
+      .nav-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1.5px solid var(--gold-dim);
+        object-fit: cover;
+      }
+
+      /* ── Gold Divider ── */
+      .gold-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold-dim),
+          transparent
+        );
+        border: none;
+        margin: 32px 0;
+      }
+
+      /* ── Page Header ── */
+      .page-header {
+        margin-bottom: 36px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border);
+      }
+      .page-header p {
+        color: var(--text-muted);
+        margin-top: 8px;
+        font-size: 17px;
+      }
+
+      /* ── Cards ── */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        transition:
+          border-color 0.25s,
+          box-shadow 0.25s,
+          transform 0.2s;
+        position: relative;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 2px;
+        background: linear-gradient(
+          180deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        border-radius: 0 2px 2px 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .card:hover {
+        border-color: var(--gold-dim);
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.4),
+          0 0 0 1px var(--gold-glow);
+        transform: translateY(-1px);
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      /* ── Buttons ── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        font-family: "Inter", sans-serif;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        border-radius: var(--radius);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--gold), #b8923e);
+        color: var(--void);
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, var(--gold-light), var(--gold));
+        color: var(--void);
+        box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--gold);
+        border: 1px solid var(--gold-dim);
+      }
+      .btn-outline:hover {
+        background: var(--gold-glow);
+        border-color: var(--gold);
+        color: var(--gold-light);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+      }
+      .btn-ghost:hover {
+        background: var(--card);
+        color: var(--text);
+        border-color: var(--text-faint);
+      }
+
+      .btn-danger {
+        background: transparent;
+        color: var(--danger);
+        border: 1px solid rgba(192, 87, 74, 0.4);
+      }
+      .btn-danger:hover {
+        background: rgba(192, 87, 74, 0.1);
+        border-color: var(--danger);
+      }
+
+      .btn-sm {
+        padding: 7px 16px;
+        font-size: 15px;
+      }
+      .btn-lg {
+        padding: 13px 32px;
+        font-size: 14px;
+      }
+
+      /* ── Forms ── */
+      .form-group {
+        margin-bottom: 22px;
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--gold-dim);
+        margin-bottom: 8px;
+      }
+
+      .form-control {
+        width: 100%;
+        background: var(--void);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        padding: 11px 16px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        outline: none;
+        appearance: none;
+      }
+      .form-control:focus {
+        border-color: var(--gold-dim);
+        box-shadow: 0 0 0 3px var(--gold-glow);
+      }
+      .form-control::placeholder {
+        color: var(--text-faint);
+      }
+
+      textarea.form-control {
+        resize: vertical;
+        min-height: 110px;
+      }
+
+      select.form-control {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238A6F30' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+      }
+
+      .form-error {
+        font-size: 14px;
+        color: var(--danger);
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .form-hint {
+        font-size: 14px;
+        color: var(--text-faint);
+        margin-top: 6px;
+      }
+
+      /* ── Alerts / Messages ── */
+      .messages-container {
+        position: fixed;
+        top: 80px;
+        right: 24px;
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 380px;
+      }
+
+      .alert {
+        padding: 14px 18px;
+        border-radius: var(--radius);
+        font-size: 15px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        border-left: 3px solid;
+        animation: slideIn 0.3s ease;
+      }
+      .alert-success {
+        background: rgba(74, 140, 106, 0.12);
+        border-color: var(--success);
+        color: #7ac4a0;
+      }
+      .alert-error {
+        background: rgba(192, 87, 74, 0.12);
+        border-color: var(--danger);
+        color: #e08070;
+      }
+      .alert-info {
+        background: var(--gold-glow);
+        border-color: var(--gold-dim);
+        color: var(--gold-light);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* ── Badges ── */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-radius: 20px;
+      }
+      .badge-gold {
+        background: rgba(201, 168, 76, 0.15);
+        color: var(--gold);
+        border: 1px solid rgba(201, 168, 76, 0.3);
+      }
+      .badge-active {
+        background: rgba(74, 140, 106, 0.15);
+        color: #7ac4a0;
+        border: 1px solid rgba(74, 140, 106, 0.3);
+      }
+      .badge-closed {
+        background: rgba(74, 79, 100, 0.3);
+        color: var(--text-faint);
+        border: 1px solid var(--border);
+      }
+
+      /* ── Auth Layout ── */
+      .auth-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 0%,
+            rgba(201, 168, 76, 0.06) 0%,
+            transparent 70%
+          ),
+          var(--void);
+        padding: 40px 24px;
+      }
+
+      .auth-card {
+        width: 100%;
+        max-width: 460px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 48px 40px;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+      }
+
+      .auth-logo {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .auth-logo h1 {
+        font-size: 2rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .auth-logo p {
+        color: var(--text-faint);
+        font-size: 15px;
+        margin-top: 6px;
+        letter-spacing: 0.04em;
+      }
+
+      .auth-divider {
+        text-align: center;
+        position: relative;
+        margin: 28px 0;
+        color: var(--text-faint);
+        font-size: 15px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .auth-divider::before,
+      .auth-divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: var(--border);
+      }
+      .auth-divider::before {
+        left: 0;
+      }
+      .auth-divider::after {
+        right: 0;
+      }
+
+      /* ── Grid ── */
+      .grid {
+        display: grid;
+      }
+      .grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      /* ── Utilities ── */
+      .flex {
+        display: flex;
+      }
+      .flex-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .flex-gap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .flex-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .text-muted {
+        color: var(--text-muted);
+      }
+      .text-faint {
+        color: var(--text-faint);
+      }
+      .text-gold {
+        color: var(--gold);
+      }
+      .text-danger {
+        color: var(--danger);
+      }
+      .text-sm {
+        font-size: 16px;
+      }
+      .text-xs {
+        font-size: 15px;
+      }
+      .mt-4 {
+        margin-top: 4px;
+      }
+      .mt-8 {
+        margin-top: 8px;
+      }
+      .mt-16 {
+        margin-top: 16px;
+      }
+      .mt-24 {
+        margin-top: 24px;
+      }
+      .mb-8 {
+        margin-bottom: 8px;
+      }
+      .mb-16 {
+        margin-bottom: 16px;
+      }
+      .mb-24 {
+        margin-bottom: 24px;
+      }
+      .text-center {
+        text-align: center;
+      }
+
+      /* ── Footer ── */
+      .footer {
+        border-top: 1px solid var(--border);
+        padding: 24px 0;
+        text-align: center;
+        font-size: 14px;
+        color: var(--text-faint);
+        letter-spacing: 0.04em;
+      }
+      .footer span {
+        color: var(--gold-dim);
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 768px) {
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+        .auth-card {
+          padding: 36px 24px;
+        }
+        .navbar-nav .nav-link {
+          display: none;
+        }
+        .navbar-nav .nav-link.mobile-show {
+          display: flex;
+        }
+      }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    {% if request.session.user_id %}
+    <!-- ── Navbar (authenticated) ── -->
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="{% url 'dashboard' %}" class="navbar-brand"
+          >Solve<span>Space</span></a
+        >
+        <ul class="navbar-nav">
+          <li>
+            <a
+              href="{% url 'dashboard' %}"
+              class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+              >Explore</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'post_question' %}"
+              class="nav-link {% if request.resolver_match.url_name == 'post_question' %}active{% endif %}"
+              >Ask</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'user_details' %}"
+              class="nav-link {% if request.resolver_match.url_name == 'user_details' %}active{% endif %}"
+              >Profile</a
+            >
+          </li>
+          <li>
+            <a
+              href="{% url 'user_details' %}"
+              class="flex-gap"
+              style="margin-left: 8px"
+            >
+              {% if user.profile_pic %}
+              <img
+                src="{{ user.profile_pic.url }}"
+                alt="avatar"
+                class="nav-avatar"
+              />
+              {% else %}
+              <div
+                class="nav-avatar flex-center"
+                style="
+                  background: var(--card);
+                  font-size: 15px;
+                  font-weight: 600;
+                  color: var(--gold);
+                "
+              >
+                {{ request.session.username|slice:":1"|upper }}
+              </div>
+              {% endif %}
+            </a>
+          </li>
+          <li>
+            <a
+              href="{% url 'logout' %}"
+              class="btn btn-ghost btn-sm mobile-show"
+              style="margin-left: 4px"
+              >Sign out</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    {% endif %}
+
+    <!-- ── Flash Messages ── -->
+    {% if messages %}
+    <div class="messages-container">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {% if message.tags == 'success' %}✦{% elif message.tags == 'error' %}✕{%
+        else %}◈{% endif %} {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ── Main ── -->
+    {% block body %}
+    <main class="main-content">
+      <div class="container">{% block content %}{% endblock %}</div>
+    </main>
+    {% endblock %}
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+      <div class="container">
+        <span>SolveSpace</span> &mdash; Knowledge, refined &nbsp;&middot;&nbsp;
+        {% now "Y" %}
+      </div>
+    </footer>
+
+    <script>
+      // Auto-dismiss flash messages after 4s
+      setTimeout(() => {
+        document.querySelectorAll(".alert").forEach((el) => {
+          el.style.transition = "opacity 0.4s";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 400);
+        });
+      }, 4000);
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

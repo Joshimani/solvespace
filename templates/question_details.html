@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}{{ question.topic }} — SolveSpace{% endblock %}
+
+{% block content %}
+
+<!-- Back -->
+<a href="{% url 'dashboard' %}" class="text-sm text-muted" style="display:inline-flex; align-items:center; gap:6px; margin-bottom:28px;">
+  ← Back to Explore
+</a>
+
+<!-- Question -->
+<div class="card" style="margin-bottom:32px;">
+
+  <div class="flex-between" style="margin-bottom:18px;">
+    <div class="flex-gap flex-wrap">
+      <span class="badge badge-gold">{{ question.question_type }}</span>
+      <span class="badge {% if question.status == 'active' %}badge-active{% else %}badge-closed{% endif %}">
+        {{ question.status }}
+      </span>
+    </div>
+    <span class="text-xs text-faint">{{ question.created_at|date:"F j, Y" }}</span>
+  </div>
+
+  <h2 style="margin-bottom:16px;">{{ question.topic }}</h2>
+
+  <p style="color:var(--text); line-height:1.75; font-size:18px; margin-bottom:20px;">
+    {{ question.the_question }}
+  </p>
+
+  {% if question.image %}
+  <div style="margin-bottom:20px; border-radius:var(--radius); overflow:hidden; border:1px solid var(--border);">
+    <img src="{{ question.image.url }}" alt="Question image" style="width:100%; max-height:360px; object-fit:cover; display:block;">
+  </div>
+  {% endif %}
+
+  <hr class="gold-divider">
+
+  <div class="flex-between">
+    <div class="flex-gap">
+      {% if question.author.profile_pic %}
+        <img src="{{ question.author.profile_pic.url }}" alt="avatar"
+             style="width:36px; height:36px; border-radius:50%; border:1.5px solid var(--gold-dim); object-fit:cover;">
+      {% else %}
+        <div style="width:36px; height:36px; border-radius:50%; background:var(--surface);
+                    border:1.5px solid var(--gold-dim); display:flex; align-items:center; justify-content:center;
+                    font-size:14px; font-weight:600; color:var(--gold);">
+          {{ question.author.username|slice:":1"|upper }}
+        </div>
+      {% endif %}
+      <div>
+        <div class="text-sm" style="color:var(--gold-light); font-weight:500;">{{ question.author.username }}</div>
+        <div class="text-xs text-faint">{{ question.author.full_name }}</div>
+      </div>
+    </div>
+
+    <div class="flex-gap flex-wrap" style="justify-content:flex-end;">
+      <!-- Upvote -->
+      <form method="POST" action="{% url 'question_upvotes' question.slug %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline btn-sm">
+          ✦ {{ question.upvotes.count }} upvote{{ question.upvotes.count|pluralize }}
+        </button>
+      </form>
+
+      <!-- Edit / Delete (author only) -->
+      {% if request.session.user_id == question.author.id %}
+        <a href="{% url 'update_question' question.slug %}" class="btn btn-ghost btn-sm">Edit</a>
+        <a href="{% url 'delete_question' question.slug %}" class="btn btn-danger btn-sm">Delete</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Answers section -->
+<div class="flex-between" style="margin-bottom:20px;">
+  <h3 style="color:var(--text-muted); font-size:1rem; font-weight:500; letter-spacing:0.05em; text-transform:uppercase;">
+    {{ answers.count }} Answer{{ answers.count|pluralize }}
+  </h3>
+  {% if question.status == 'active' %}
+    <a href="{% url 'post_answer' question.slug %}" class="btn btn-primary btn-sm">Post an answer</a>
+  {% else %}
+    <span class="text-xs text-faint">Closed — no new answers</span>
+  {% endif %}
+</div>
+
+{% if answers %}
+  <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:40px;">
+    {% for answer in answers %}
+    <div class="card">
+      <p style="color:var(--text); line-height:1.75; margin-bottom:18px;">
+        {{ answer.answer }}
+      </p>
+      <div class="flex-between">
+        <div class="flex-gap">
+          {% if answer.user.profile_pic %}
+            <img src="{{ answer.user.profile_pic.url }}" alt="avatar"
+                 style="width:28px; height:28px; border-radius:50%; border:1px solid var(--gold-dim); object-fit:cover;">
+          {% else %}
+            <div style="width:28px; height:28px; border-radius:50%; background:var(--surface);
+                        border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center;
+                        font-size:11px; font-weight:600; color:var(--gold);">
+              {{ answer.user.username|slice:":1"|upper }}
+            </div>
+          {% endif %}
+          <span class="text-xs text-muted">{{ answer.user.username }}</span>
+        </div>
+        <span class="text-xs text-faint">{{ answer.created_at|date:"M j, Y" }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+  <div style="text-align:center; padding:48px 24px; border:1px dashed var(--border); border-radius:var(--radius-lg);">
+    <p style="color:var(--text-faint); font-size:14px;">No answers yet. Be the first to respond.</p>
+    {% if question.status == 'active' %}
+      <a href="{% url 'post_answer' question.slug %}" class="btn btn-outline btn-sm" style="margin-top:16px;">
+        Write an answer
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% endblock %}

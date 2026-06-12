@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}{{ user.username }} — SolveSpace{% endblock %}
+
+{% block content %}
+
+<!-- Profile header -->
+<div class="card" style="margin-bottom:32px; background: linear-gradient(135deg, var(--card) 0%, var(--surface) 100%);">
+  <div style="display:flex; align-items:flex-start; gap:28px; flex-wrap:wrap;">
+
+    {% if user.profile_pic %}
+      <img src="{{ user.profile_pic.url }}" alt="{{ user.username }}"
+           style="width:96px; height:96px; border-radius:50%; border:2px solid var(--gold-dim); object-fit:cover; flex-shrink:0;">
+    {% else %}
+      <div style="width:96px; height:96px; border-radius:50%; background:var(--void); border:2px solid var(--gold-dim);
+                  display:flex; align-items:center; justify-content:center; font-size:2.2rem;
+                  font-family:'Cormorant Garamond',serif; color:var(--gold); flex-shrink:0;">
+        {{ user.username|slice:":1"|upper }}
+      </div>
+    {% endif %}
+
+    <div style="flex:1; min-width:200px;">
+      <h2 style="margin-bottom:4px;">{{ user.full_name }}</h2>
+      <p class="text-sm" style="color:var(--gold-dim); margin-bottom:12px;">@{{ user.username }}</p>
+
+      {% if user.bio %}
+        <p style="color:var(--text-muted); font-size:16px; line-height:1.7; margin-bottom:12px;">{{ user.bio }}</p>
+      {% endif %}
+
+      <div class="flex-gap flex-wrap">
+        {% if user.address %}
+          <span class="text-xs text-muted">◈ {{ user.address }}</span>
+        {% endif %}
+        <span class="text-xs text-muted">✦ Member since {{ user.created_at|date:"M Y" }}</span>
+        {% if user.last_login %}
+          <span class="text-xs text-faint">Last active {{ user.last_login|date:"M j, Y" }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="flex-gap" style="flex-shrink:0;">
+      <a href="{% url 'update_user_details' %}" class="btn btn-outline btn-sm">Edit profile</a>
+      <a href="{% url 'logout' %}" class="btn btn-ghost btn-sm">Sign out</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Stats row -->
+<div class="grid-3" style="margin-bottom:32px;">
+  <div class="card" style="text-align:center; padding:20px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--gold); margin-bottom:4px;">
+      {{ user.questions.count }}
+    </div>
+    <div class="text-xs text-muted" style="letter-spacing:0.08em; text-transform:uppercase;">Questions</div>
+  </div>
+  <div class="card" style="text-align:center; padding:20px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--gold); margin-bottom:4px;">
+      {{ user.answers.count }}
+    </div>
+    <div class="text-xs text-muted" style="letter-spacing:0.08em; text-transform:uppercase;">Answers</div>
+  </div>
+  <div class="card" style="text-align:center; padding:20px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; color:var(--gold); margin-bottom:4px;">
+      {{ user.upvoted_questions.count }}
+    </div>
+    <div class="text-xs text-muted" style="letter-spacing:0.08em; text-transform:uppercase;">Upvotes given</div>
+  </div>
+</div>
+
+<!-- Recent questions -->
+{% if user.questions.all %}
+<div class="page-header">
+  <h3 style="font-size:1rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); font-weight:500;">
+    Recent Questions
+  </h3>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:12px; margin-bottom:40px;">
+  {% for question in user.questions.all|slice:":5" %}
+  <div class="card" style="padding:18px 24px;">
+    <div class="flex-between">
+      <div>
+        <a href="{% url 'question_details' question.slug %}">
+          <span style="color:var(--gold-light); font-size:14px; font-weight:500;">{{ question.topic }}</span>
+        </a>
+        <div class="text-xs text-faint" style="margin-top:4px;">{{ question.created_at|date:"M j, Y" }}</div>
+      </div>
+      <div class="flex-gap">
+        <span class="badge badge-gold">{{ question.question_type }}</span>
+        <span class="badge {% if question.status == 'active' %}badge-active{% else %}badge-closed{% endif %}">
+          {{ question.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Danger zone -->
+<div style="border:1px solid rgba(192,87,74,0.2); border-radius:var(--radius-lg); padding:24px;">
+  <h4 style="color:var(--danger); font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">
+    Danger zone
+  </h4>
+  <p class="text-sm text-muted" style="margin-bottom:16px;">
+    Permanently delete your account and all associated data. This cannot be undone.
+  </p>
+  <a href="{% url 'delete_user' %}" class="btn btn-danger btn-sm">Delete account</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}SolveSpace — Knowledge, Refined{% endblock %}
+
+{% block body %}
+<div style="min-height:100vh; display:flex; flex-direction:column;">
+
+  <!-- Hero -->
+  <section style="flex:1; display:flex; align-items:center; justify-content:center; text-align:center; padding: 80px 24px; background: radial-gradient(ellipse 70% 50% at 50% 20%, rgba(201,168,76,0.07) 0%, transparent 65%), var(--void);">
+    <div style="max-width: 680px;">
+
+      <p style="font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:24px;">
+        ◈ &nbsp; The Intellectual Marketplace
+      </p>
+
+      <h1 style="font-size: clamp(2.8rem, 6vw, 4.5rem); line-height:1.1; margin-bottom:24px;">
+        Questions deserve<br><em style="color:var(--gold); font-style:italic;">precise</em> answers
+      </h1>
+
+      <p style="font-size:16px; color:var(--text-muted); max-width:480px; margin:0 auto 40px; line-height:1.75;">
+        SolveSpace is a curated space for curious minds. Ask with clarity, answer with depth, and build a reputation worth having.
+      </p>
+
+      <div class="flex-center" style="gap:16px; flex-wrap:wrap;">
+        <a href="{% url 'sign_up' %}" class="btn btn-primary btn-lg">Begin your journey</a>
+        <a href="{% url 'login' %}" class="btn btn-outline btn-lg">Sign in</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Feature strip -->
+  <section style="border-top:1px solid var(--border); background:var(--surface); padding:48px 24px;">
+    <div class="container">
+      <div class="grid-3" style="text-align:center;">
+        <div style="padding:20px;">
+          <div style="font-size:2rem; color:var(--gold); margin-bottom:12px; font-family:'Cormorant Garamond',serif;">⟡</div>
+          <h4>Ask Anything</h4>
+          <p style="color:var(--text-muted); font-size:13px; margin-top:8px;">From mathematics to curiosity—every discipline has a home here.</p>
+        </div>
+        <div style="padding:20px; border-left:1px solid var(--border); border-right:1px solid var(--border);">
+          <div style="font-size:2rem; color:var(--gold); margin-bottom:12px; font-family:'Cormorant Garamond',serif;">◈</div>
+          <h4>Expert Answers</h4>
+          <p style="color:var(--text-muted); font-size:13px; margin-top:8px;">Community-driven responses, refined through upvotes and reputation.</p>
+        </div>
+        <div style="padding:20px;">
+          <div style="font-size:2rem; color:var(--gold); margin-bottom:12px; font-family:'Cormorant Garamond',serif;">✦</div>
+          <h4>Build Reputation</h4>
+          <p style="color:var(--text-muted); font-size:13px; margin-top:8px;">Your contributions are remembered. Quality rises to the top.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

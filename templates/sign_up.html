@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Create Account — SolveSpace{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+  <div style="width:100%; max-width:580px;">
+
+    <div class="auth-logo">
+      <h1>SolveSpace</h1>
+      <p>Create your account</p>
+    </div>
+
+    <div class="auth-card">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Full name</label>
+            <input type="text" name="full_name" class="form-control"
+                   placeholder="Your full name"
+                   value="{{ form.full_name.value|default:'' }}">
+            {% if form.full_name.errors %}
+              <span class="form-error">✕ {{ form.full_name.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control"
+                   placeholder="@handle"
+                   value="{{ form.username.value|default:'' }}">
+            {% if form.username.errors %}
+              <span class="form-error">✕ {{ form.username.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email address</label>
+          <input type="email" name="email" class="form-control"
+                 placeholder="you@example.com"
+                 value="{{ form.email.value|default:'' }}">
+          {% if form.email.errors %}
+            <span class="form-error">✕ {{ form.email.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control"
+                 placeholder="Choose a strong password">
+          {% if form.password.errors %}
+            <span class="form-error">✕ {{ form.password.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Profile photo</label>
+          <input type="file" name="profile_pic" class="form-control" accept="image/*"
+                 style="padding: 9px 16px; cursor:pointer;">
+          {% if form.profile_pic.errors %}
+            <span class="form-error">✕ {{ form.profile_pic.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Location <span style="color:var(--text-faint); text-transform:none; font-size:11px; font-weight:400;">(optional)</span></label>
+          <input type="text" name="address" class="form-control"
+                 placeholder="City, Country"
+                 value="{{ form.address.value|default:'' }}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Bio <span style="color:var(--text-faint); text-transform:none; font-size:11px; font-weight:400;">(optional)</span></label>
+          <textarea name="bio" class="form-control" placeholder="A few words about yourself…">{{ form.bio.value|default:'' }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:8px;">
+          Create account
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <p class="text-center text-sm" style="color:var(--text-muted);">
+        Already have an account?
+        <a href="{% url 'login' %}" style="color:var(--gold);">Sign in</a>
+      </p>
+    </div>
+
+    <p class="text-center text-xs mt-16" style="color:var(--text-faint);">
+      <a href="{% url 'home' %}" style="color:var(--text-faint);">← Back to home</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

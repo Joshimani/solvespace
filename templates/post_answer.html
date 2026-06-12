@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Answer — SolveSpace{% endblock %}
+
+{% block content %}
+
+<div style="max-width:680px; margin:0 auto;">
+
+  <a href="{% url 'question_details' question.slug %}" class="text-sm text-muted"
+     style="display:inline-flex; align-items:center; gap:6px; margin-bottom:28px;">
+    ← Back to question
+  </a>
+
+  <!-- Question recap -->
+  <div class="card" style="margin-bottom:28px; background:var(--void);">
+    <div class="flex-gap" style="margin-bottom:10px;">
+      <span class="badge badge-gold">{{ question.question_type }}</span>
+    </div>
+    <h3 style="margin-bottom:10px;">{{ question.topic }}</h3>
+    <p style="color:var(--text-muted); font-size:14px; line-height:1.7;
+       display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+      {{ question.the_question }}
+    </p>
+  </div>
+
+  <!-- Answer form -->
+  <div class="page-header">
+    <h2>Your Answer</h2>
+    <p>Be precise, be thorough, be helpful</p>
+  </div>
+
+  <div class="card">
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Answer</label>
+        <textarea name="answer" class="form-control" style="min-height:180px;"
+                  placeholder="Write your answer here (at least 10 characters)…">{{ form.answer.value|default:'' }}</textarea>
+        {% if form.answer.errors %}
+          <span class="form-error">✕ {{ form.answer.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="flex-gap" style="justify-content:flex-end; margin-top:8px;">
+        <a href="{% url 'question_details' question.slug %}" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary">Submit answer</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

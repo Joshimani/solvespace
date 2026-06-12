@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile — SolveSpace{% endblock %}
+
+{% block content %}
+
+<div style="max-width:680px; margin:0 auto;">
+
+  <div class="page-header">
+    <a href="{% url 'user_details' %}" class="text-sm text-muted"
+       style="display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;">
+      ← Back to profile
+    </a>
+    <h2>Edit Profile</h2>
+    <p>Keep your details current</p>
+  </div>
+
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Full name</label>
+          <input type="text" name="full_name" class="form-control"
+                 value="{{ form.full_name.value|default:'' }}">
+          {% if form.full_name.errors %}
+            <span class="form-error">✕ {{ form.full_name.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" name="username" class="form-control"
+                 value="{{ form.username.value|default:'' }}">
+          {% if form.username.errors %}
+            <span class="form-error">✕ {{ form.username.errors.0 }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" name="email" class="form-control"
+               value="{{ form.email.value|default:'' }}">
+        {% if form.email.errors %}
+          <span class="form-error">✕ {{ form.email.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Profile photo</label>
+        {% if form.instance.profile_pic %}
+          <div class="flex-gap" style="margin-bottom:10px;">
+            <img src="{{ form.instance.profile_pic.url }}" alt="current"
+                 style="width:48px; height:48px; border-radius:50%; border:1px solid var(--gold-dim); object-fit:cover;">
+            <span class="text-xs text-muted">Current photo</span>
+          </div>
+        {% endif %}
+        <input type="file" name="profile_pic" class="form-control" accept="image/*"
+               style="padding:9px 16px; cursor:pointer;">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <input type="text" name="address" class="form-control"
+               value="{{ form.address.value|default:'' }}"
+               placeholder="City, Country">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea name="bio" class="form-control">{{ form.bio.value|default:'' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">New password <span style="color:var(--text-faint); text-transform:none; font-size:11px; font-weight:400;">(leave blank to keep current)</span></label>
+        <input type="password" name="password" class="form-control" placeholder="Enter new password">
+      </div>
+
+      <div class="flex-gap" style="justify-content:flex-end; margin-top:8px;">
+        <a href="{% url 'user_details' %}" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

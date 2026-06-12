@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Sign In — SolveSpace{% endblock %}
+
+{% block body %}
+<div class="auth-page">
+  <div style="width:100%; max-width:440px;">
+
+    <div class="auth-logo">
+      <h1>SolveSpace</h1>
+      <p>Welcome back</p>
+    </div>
+
+    <div class="auth-card">
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label class="form-label">Email address</label>
+          <input type="email" name="email" class="form-control"
+                 placeholder="you@example.com"
+                 value="{{ form.email.value|default:'' }}"
+                 autofocus>
+          {% if form.email.errors %}
+            <span class="form-error">✕ {{ form.email.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control"
+                 placeholder="Your password">
+          {% if form.password.errors %}
+            <span class="form-error">✕ {{ form.password.errors.0 }}</span>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:16px;">
+          Sign in
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <p class="text-center text-sm" style="color:var(--text-muted);">
+        New to SolveSpace?
+        <a href="{% url 'sign_up' %}" style="color:var(--gold);">Create an account</a>
+      </p>
+    </div>
+
+    <p class="text-center text-xs mt-16" style="color:var(--text-faint);">
+      <a href="{% url 'home' %}" style="color:var(--text-faint);">← Back to home</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Edit Question — SolveSpace{% endblock %}
+
+{% block content %}
+
+<div style="max-width:680px; margin:0 auto;">
+
+  <div class="page-header">
+    <h2>Edit Question</h2>
+    <p>Refine your question for greater clarity</p>
+  </div>
+
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Topic</label>
+        <input type="text" name="topic" class="form-control"
+               value="{{ form.topic.value|default:'' }}"
+               placeholder="State your topic clearly">
+        {% if form.topic.errors %}
+          <span class="form-error">✕ {{ form.topic.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Question</label>
+        <textarea name="the_question" class="form-control" style="min-height:140px;">{{ form.the_question.value|default:'' }}</textarea>
+        {% if form.the_question.errors %}
+          <span class="form-error">✕ {{ form.the_question.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select name="question_type" class="form-control">
+            {% for value, label in form.fields.question_type.choices %}
+              <option value="{{ value }}" {% if form.question_type.value == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-control">
+            {% for value, label in form.fields.status.choices %}
+              <option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Update image <span style="color:var(--text-faint); text-transform:none; font-size:11px; font-weight:400;">(optional)</span></label>
+        <input type="file" name="image" class="form-control" accept="image/*"
+               style="padding:9px 16px; cursor:pointer;">
+      </div>
+
+      <div class="flex-gap" style="justify-content:flex-end; margin-top:8px;">
+        <a href="{% url 'dashboard' %}" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
