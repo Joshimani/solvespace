@@ -25,7 +25,7 @@ class Question(models.Model):
     slug = models.SlugField(max_length=250)
     topic = models.CharField(max_length=300)
     the_question = models.TextField()
-    image = models.ImageField(upload_to='questions/media/', null=True, blank=True)
+    image = models.ImageField(upload_to='questions/', null=True, blank=True)
     question_type = models.CharField(max_length=50, choices=TYPES_CHOICE, default='reality')
     status = models.CharField(max_length=50, choices=STATUS_CHECK, default='active')
     created_at = models.DateTimeField(auto_now_add=True)

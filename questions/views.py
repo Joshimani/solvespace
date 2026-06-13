@@ -112,6 +112,8 @@ def update_question(request, slug):
     if request.method == "POST":
         if form.is_valid():
             form.save()
+        else:
+            print(form.errors)
 
             messages.success(
                 request,

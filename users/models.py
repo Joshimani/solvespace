@@ -5,7 +5,7 @@ from django.utils.text import slugify
 class User(models.Model):
     full_name = models.CharField(max_length=100)
     username = models.CharField(max_length=50, unique=True)
-    profile_pic = models.ImageField(upload_to='media/')
+    profile_pic = models.ImageField(upload_to='profile/')
     email = models.EmailField(max_length=100, unique=True)
     address = models.CharField(max_length=300, blank=True)
     bio = models.TextField(blank=True)
