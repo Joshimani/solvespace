@@ -1,15 +1,17 @@
 anyio==4.13.0
 asgiref==3.11.1
-zstandard
+backports.zstd==1.5.0
 build==1.5.0
 CacheControl==0.14.4
 certifi==2026.5.20
 charset-normalizer==3.4.7
 cleo==2.1.0
+cloudinary==1.44.2
 colorama==0.4.6
 crashtest==0.4.1
 distlib==0.4.1
 Django==6.0.6
+django-cloudinary-storage==0.3.0
 dulwich==1.2.6
 fastjsonschema==2.21.2
 filelock==3.29.1
@@ -40,6 +42,7 @@ RapidFuzz==3.14.5
 requests==2.34.2
 requests-toolbelt==1.0.0
 shellingham==1.5.4
+six==1.17.0
 sqlparse==0.5.5
 tomlkit==0.15.0
 trove-classifiers==2026.6.1.19
